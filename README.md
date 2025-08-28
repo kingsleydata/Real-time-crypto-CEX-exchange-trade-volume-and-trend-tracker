@@ -1,0 +1,2 @@
+# Real-time-crypto-CEX-exchange-trade-volume-and-trend-tracker
+Track cryptocurrency market movement like a pro. This Looker Studio dashboard delivers near real-time updates on crypto prices, trading volumes, and trends all powered by Coin API and automated data pipelines via BigQuery and colab enterprise (vertex AI). You also get to see trade volume market share of the top centralized cryptocurrency exchanges.

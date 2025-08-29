@@ -15,7 +15,7 @@ This project was undertaken to transform raw trading and price data into **actio
 
 ***The project involves extracting publicly available trade volume data from coin api, cleaning the data and loading it into Bigquery for continuous realtime analysis.***
 
-***The project is scheduled using google cloud colab enterprise scheduler via CRON schedule language, th ETL script runs twice daily providing users near real time access to the
+***The project is scheduled using google cloud colab enterprise scheduler via CRON schedule language, the ETL script runs twice daily providing users near real time access to the
 latest crypto price flunctuations, trade volume and trends.***
 
 <img width="761" height="301" alt="Crypto ETL project drawio" src="https://github.com/user-attachments/assets/6018ef1e-60f7-424b-990d-f7e578f91952" />

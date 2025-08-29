@@ -11,6 +11,15 @@ Crypto markets are fast, volatile, and heavily influenced by exchange performanc
 
 This project was undertaken to transform raw trading and price data into **actionable insights** that support smarter decision-making in areas such as market trend analysis, exchange performance evaluation, and trading strategy development.  
 
+**Project structure and architecture**
+
+***The project involves extracting publicly available trade volume data from coin api, cleaning the data and loading it into Bigquery for continuous realtime analysis.***
+
+***The project is scheduled using google cloud colab enterprise scheduler via CRON schedule language, th ETL script runs twice daily providing users near real time access to the
+latest crypto price flunctuations, trade volume and trends.***
+
+<img width="761" height="301" alt="Crypto ETL project drawio" src="https://github.com/user-attachments/assets/6018ef1e-60f7-424b-990d-f7e578f91952" />
+
 **What was my analysis focused on?**  
 
 My analysis focused on both **foundational exchange activity metrics** and **advanced market trend indicators**. Core KPIs included:  
@@ -75,6 +84,47 @@ To gain deeper insights, the project also explored:
 
 ![Crypto_price_tracker_trends_page-3 compressed](https://github.com/user-attachments/assets/4a2b97e2-b101-4305-94f8-318476511943)
 
+****SQL query to calculate simple moving average (50, 100 and 200 day)****
+
+```sql
+WITH FILTERED_DATA AS (
+  SELECT
+    MAPPED_INSTRUMENT,
+    BASE,
+    DATE(TIMESTAMP_SECONDS(CAST(TIMESTAMP AS INT64))) AS TRADE_DATE,
+    CLOSE,
+    MARKET,
+    ROW_NUMBER() OVER (
+      PARTITION BY MAPPED_INSTRUMENT,  DATE(TIMESTAMP_SECONDS(CAST(TIMESTAMP AS INT64)))
+      ORDER BY  DATE(TIMESTAMP_SECONDS(CAST(TIMESTAMP AS INT64)))
+    ) AS RN
+  FROM btc_historical_exchange_data.daily_crypto_price_data_silver_layer
+  WHERE
+    MARKET = 'binance'
+    AND MAPPED_INSTRUMENT IN ('BTC-USDT', 'ETH-USDT', 'XRP-USDT', 'BNB-USDT', 'SOL-USDT')
+),
+UNIQUE_DATES AS (
+  SELECT *
+  FROM FILTERED_DATA
+  WHERE RN = 1
+),
+MOVING_AVERAGES AS (
+  SELECT
+    MAPPED_INSTRUMENT,
+    BASE,
+    TRADE_DATE,
+    CLOSE,
+    AVG(CLOSE) OVER (
+      PARTITION BY MAPPED_INSTRUMENT
+      ORDER BY TRADE_DATE
+      ROWS BETWEEN 99 PRECEDING AND CURRENT ROW
+    ) AS MOVING_AVG_100_DAY
+  FROM UNIQUE_DATES
+)
+SELECT *
+FROM MOVING_AVERAGES
+ORDER BY 3 DESC
+```
 
 ###### Moving averages smooth out short-term noise and highlight long-term trends. Traders often use these levels to identify support/resistance zones or confirm bullish vs bearish market momentum.  
 

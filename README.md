@@ -26,7 +26,10 @@ My analysis focused on both **foundational exchange activity metrics** and **adv
 
 * **Total trade volume across major exchanges**  
 * **Exchange dominance** (by both trade volume and number of trades)  
-* **Hourly price volatility**  
+* **Hourly price volatility**
+
+![Videoofdashboard-ezgif com-speed](https://github.com/user-attachments/assets/bd03b0b0-4d8e-41fa-934f-3124a07b1562)
+
 
 To gain deeper insights, the project also explored:  
 
